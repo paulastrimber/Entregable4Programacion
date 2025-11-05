@@ -19,7 +19,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Desplegando aplicación...'
-                bat 'java -jar target\\mi-playlist-0.0.1-SNAPSHOT.jar'
+                bat 'java -jar target\\playlist-0.0.1-SNAPSHOT.jar'
             }
         }
     }

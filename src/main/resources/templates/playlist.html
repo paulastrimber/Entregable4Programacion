@@ -21,7 +21,11 @@
 <ul>
     <li th:each="video : ${videos}">
         <h3 th:text="${video.titulo}"></h3>
-        <iframe th:src="${video.url}" width="400" height="225" allowfullscreen></iframe>
+        <iframe width="400" height="225"
+        th:src="'https://www.youtube.com/embed/' + ${#strings.substringAfter(video.url, 'v=')}"
+        frameborder="0"
+        allowfullscreen>
+        </iframe>
         <p>❤️ Likes: <span th:text="${video.likes}"></span></p>
         <p>⭐ Favorito: <span th:text="${video.favorito}"></span></p>
         <a th:href="@{'/like/' + ${video.titulo}}">Like</a> |

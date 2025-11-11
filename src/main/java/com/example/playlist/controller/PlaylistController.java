@@ -44,4 +44,13 @@ public class PlaylistController {
         playlistService.toggleFavorito(titulo);
         return "redirect:/";
     }
+
+     @GetMapping("/favoritos")
+    public String verFavoritos(Model model) {
+        model.addAttribute("videos", playlistService.obtenerFavoritos());
+        model.addAttribute("nuevoVideo", new Video());
+        return "playlist";
+    }
+
+    
 }

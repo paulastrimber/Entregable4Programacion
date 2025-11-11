@@ -1,38 +1,153 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Mi Playlist</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <style>
+        /* 🎨 FONDO GRADIENTE */
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px;
+            color: #fff;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .menu {
+            margin-bottom: 25px;
+        }
+
+        .menu a {
+            margin: 0 8px;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        /* 🎶 Formulario */
+        form {
+            margin-bottom: 35px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 260px;
+            margin-right: 8px;
+            border: none;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #ff4757;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #e84118;
+        }
+
+        /* 📺 CONTENEDOR FLEX */
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 10px;
+        }
+
+        /* 🎵 TARJETA DE VIDEO */
+        .video-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 15px;
+            padding: 20px;
+            width: 400px;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        iframe {
+            border-radius: 10px;
+            margin-top: 10px;
+            width: 100%;
+            height: 230px;
+        }
+
+        .video-card h3 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .video-card p {
+            margin: 6px 0;
+            font-size: 0.95em;
+        }
+
+        .video-card a {
+            text-decoration: none;
+            color: #00d2ff;
+            font-weight: bold;
+        }
+
+        .video-card a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>🎵 Mi Playlist</h1>
 
-<form action="#" th:action="@{/agregar}" th:object="${nuevoVideo}" method="post">
-    <input type="text" placeholder="Título" th:field="*{titulo}" required/>
-    <input type="url" placeholder="Link YouTube" th:field="*{url}" required/>
-    <button type="submit">Agregar</button>
-</form>
+    <h2>🎵 Mi Playlist</h2>
 
-<div th:if="${#lists.isEmpty(videos)}">
-    <p>No hay videos aún.</p>
-</div>
+    <div class="menu">
+        <a href="/">Ver todos</a> |
+        <a href="/favoritos">Ver favoritos ⭐</a>
+    </div>
 
-<ul>
-    <li th:each="video : ${videos}">
-        <h3 th:text="${video.titulo}"></h3>
-        <iframe width="400" height="225"
-        th:src="'https://www.youtube.com/embed/' + ${#strings.substringAfter(video.url, 'v=')}"
-        frameborder="0"
-        allowfullscreen>
-        </iframe>
-        <p>❤️ Likes: <span th:text="${video.likes}"></span></p>
-        <p>⭐ Favorito: <span th:text="${video.favorito}"></span></p>
-        <a th:href="@{'/like/' + ${video.titulo}}">Like</a> |
-        <a th:href="@{'/favorito/' + ${video.titulo}}">Favorito</a> |
-        <a th:href="@{'/eliminar/' + ${video.titulo}}">Eliminar</a>
-    </li>
-</ul>
+    <form th:action="@{/agregar}" method="post" th:object="${nuevoVideo}">
+        <input type="text" th:field="*{titulo}" placeholder="Título del video" required>
+        <input type="text" th:field="*{url}" placeholder="URL embebida (https://www.youtube.com/embed/...)" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <div class="video-container">
+        <div class="video-card" th:each="video : ${videos}">
+            <h3 th:text="${video.titulo}"></h3>
+
+            <iframe th:src="${video.url}" allowfullscreen></iframe>
+
+            <p>❤️ Likes: <span th:text="${video.likes}"></span></p>
+            <p>⭐ Favorito: <span th:text="${video.favorito} ? 'Sí' : 'No'"></span></p>
+
+            <a th:href="@{'/like/' + ${video.titulo}}">👍 Like</a> |
+            <a th:href="@{'/favorito/' + ${video.titulo}}">⭐ Favorito</a> |
+            <a th:href="@{'/eliminar/' + ${video.titulo}}">🗑️ Eliminar</a>
+        </div>
+    </div>
 
 </body>
 </html>

@@ -13,7 +13,15 @@ import java.util.List;
 @Repository
 public class PlaylistRepository {
     private final ObjectMapper mapper = new ObjectMapper();
-    private final File archivo = new File("playlist.json");
+    private File archivo;
+
+    public PlaylistRepository(File archivo) {
+        this.archivo = archivo;
+    }
+
+    public PlaylistRepository() {
+        this(new File("playlist.json"));
+    }
 
     public List<Video> cargar() {
         if (!archivo.exists()) return new ArrayList<>();
@@ -32,4 +40,9 @@ public class PlaylistRepository {
             e.printStackTrace();
         }
     }
+
+    public String getRutaArchivo() {
+        return archivo.getAbsolutePath();
+    }
+
 }

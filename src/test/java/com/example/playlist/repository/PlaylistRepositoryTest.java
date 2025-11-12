@@ -2,6 +2,7 @@ package com.example.playlist.repository;
 
 import com.example.playlist.model.Video;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -11,12 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlaylistRepositoryTest {
 
-    private final PlaylistRepository repo = new PlaylistRepository();
-    private final File archivo = new File("playlist.json");
+    private File archivoTest;
+    private PlaylistRepository repo;
+
+    @BeforeEach
+    void setup() {
+        archivoTest = new File("playlist_test.json");
+        repo = new PlaylistRepository(archivoTest);
+        if (archivoTest.exists()) archivoTest.delete(); // limpiar antes de cada test
+    }
 
     @AfterEach
-    void limpiar() {
-        if (archivo.exists()) archivo.delete();
+    void cleanup() {
+        if (archivoTest.exists()) archivoTest.delete(); // eliminar archivo de test
     }
 
     @Test
@@ -32,8 +40,10 @@ class PlaylistRepositoryTest {
 
     @Test
     void cargarSinArchivo_deberiaRetornarListaVacia() {
-        if (archivo.exists()) archivo.delete();
+        if (archivoTest.exists()) archivoTest.delete();
+
         List<Video> videos = repo.cargar();
+
         assertNotNull(videos);
         assertTrue(videos.isEmpty());
     }

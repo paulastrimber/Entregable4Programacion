@@ -15,18 +15,20 @@ class PlaylistServiceTest {
 
     private PlaylistRepository repo;
     private PlaylistService service;
-    private final File archivo = new File("playlist.json");
 
     @BeforeEach
     void setup() {
-        repo = new PlaylistRepository();
+        File testFile = new File("playlist_test.json");
+        repo = new PlaylistRepository(testFile);
         service = new PlaylistService(repo);
-        if (archivo.exists()) archivo.delete(); // limpiar antes
+
+        if (testFile.exists()) testFile.delete(); // limpia solo el de test
     }
 
     @AfterEach
     void cleanup() {
-        if (archivo.exists()) archivo.delete(); // limpiar después
+        File testFile = new File("playlist_test.json");
+        if (testFile.exists()) testFile.delete();
     }
 
     @Test

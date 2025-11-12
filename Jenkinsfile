@@ -28,7 +28,7 @@ pipeline {
                     mkdir "${env.DEV_DIR}" 2>nul
                     copy target\\playlist-0.0.1-SNAPSHOT.jar "${env.DEV_DIR}\\"
                     cd "${env.DEV_DIR}"
-                    start cmd /c "java -jar playlist-0.0.1-SNAPSHOT.jar --server.port=8081"
+                    java -jar playlist-0.0.1-SNAPSHOT.jar --server.port=8081
                 """
             }
         }

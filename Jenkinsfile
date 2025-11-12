@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DEV_DIR = "C:\\Users\\Paula\\Desktop\\playlist-dev"
+        PROD_DIR = "C:\\Users\\Paula\\Desktop\\playlist-prod"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -16,10 +21,27 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Dev') {
             steps {
-                echo 'Desplegando aplicación...'
-                bat 'java -jar target\\playlist-0.0.1-SNAPSHOT.jar'
+                echo 'Desplegando en entorno de desarrollo (puerto 8081)...'
+                bat """
+                    mkdir "${env.DEV_DIR}" 2>nul
+                    copy target\\playlist-0.0.1-SNAPSHOT.jar "${env.DEV_DIR}\\"
+                    cd "${env.DEV_DIR}"
+                    start cmd /c "java -jar playlist-0.0.1-SNAPSHOT.jar --server.port=8081"
+                """
+            }
+        }
+
+        stage('Deploy Prod') {
+            steps {
+                echo 'Desplegando en entorno de producción (puerto 9090)...'
+                bat """
+                    mkdir "${env.PROD_DIR}" 2>nul
+                    copy target\\playlist-0.0.1-SNAPSHOT.jar "${env.PROD_DIR}\\"
+                    cd "${env.PROD_DIR}"
+                    start cmd /c "java -jar playlist-0.0.1-SNAPSHOT.jar --server.port=9090"
+                """
             }
         }
     }

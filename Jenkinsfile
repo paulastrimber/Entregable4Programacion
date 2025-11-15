@@ -21,18 +21,6 @@ pipeline {
             }
         }
 
-        stage('Deploy Dev') {
-            steps {
-                echo 'Desplegando en entorno de desarrollo (puerto 8081)...'
-                bat """
-                    mkdir "${env.DEV_DIR}" 2>nul
-                    copy target\\playlist-0.0.1-SNAPSHOT.jar "${env.DEV_DIR}\\"
-                    cd "${env.DEV_DIR}"
-                    java -jar playlist-0.0.1-SNAPSHOT.jar --server.port=8081
-                """
-            }
-        }
-
         stage('Deploy Prod') {
             steps {
                 echo 'Desplegando en entorno de producción (puerto 9090)...'

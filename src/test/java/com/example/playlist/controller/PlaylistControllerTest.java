@@ -22,29 +22,23 @@ class PlaylistControllerTest {
 
     @BeforeEach
     void setup() {
-        // 🧩 Usamos un archivo temporal solo para los tests
         testFile = new File("playlist_test.json");
 
-        // 1️⃣ Borramos cualquier residuo previo antes de iniciar
         if (testFile.exists()) testFile.delete();
 
-        // 2️⃣ Creamos un repositorio apuntando SOLO al archivo de test
         PlaylistRepository repo = new PlaylistRepository(testFile);
 
-        // 3️⃣ Seguridad adicional: verificamos que no apunte al archivo real
         String ruta = repo.getRutaArchivo();
         System.out.println("📁 Usando archivo de test: " + ruta);
         assertTrue(ruta.endsWith("playlist_test.json"),
                 "ERROR: el repositorio apunta al archivo real (playlist.json)");
 
-        // 4️⃣ Creamos el service y el controller manualmente (sin contexto Spring)
         service = new PlaylistService(repo);
         controller = new PlaylistController(service);
     }
 
     @AfterEach
     void cleanup() {
-        // 🧹 Limpiar el archivo temporal al final del test
         if (testFile.exists()) testFile.delete();
     }
 

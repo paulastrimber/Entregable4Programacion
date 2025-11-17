@@ -29,7 +29,7 @@ class PlaylistControllerTest {
         PlaylistRepository repo = new PlaylistRepository(testFile);
 
         String ruta = repo.getRutaArchivo();
-        System.out.println("📁 Usando archivo de test: " + ruta);
+        System.out.println("Usando archivo de test: " + ruta);
         assertTrue(ruta.endsWith("playlist_test.json"),
                 "ERROR: el repositorio apunta al archivo real (playlist.json)");
 

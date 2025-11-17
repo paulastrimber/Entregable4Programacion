@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PlaylistController {
     private final PlaylistService playlistService;
+    
 
     public PlaylistController(PlaylistService playlistService) {
         this.playlistService = playlistService;
@@ -45,7 +46,7 @@ public class PlaylistController {
         return "redirect:/";
     }
 
-     @GetMapping("/favoritos")
+    @GetMapping("/favoritos")
     public String verFavoritos(Model model) {
         model.addAttribute("videos", playlistService.obtenerFavoritos());
         model.addAttribute("nuevoVideo", new Video());

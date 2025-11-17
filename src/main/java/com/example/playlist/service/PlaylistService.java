@@ -18,9 +18,6 @@ public class PlaylistService {
         this.videos = new ArrayList<>(playlistRepository.cargar());
     }
 
-    private Video findVideo(String titulo){
-        return this.videos.stream().filter(v -> v.getTitulo().equalsIgnoreCase(titulo)).findFirst().orElse(null);
-    }
 
     public List<Video> obtenerVideos() {
         return videos;
@@ -39,21 +36,20 @@ public class PlaylistService {
         playlistRepository.guardar(videos);
     }
 
-    public void like(String titulo) {
-        Video v = findVideo(titulo);
-        if (v!=null){
-            v.setLikes(v.getLikes() + 1);
-            playlistRepository.guardar(videos);
-        }
-    }
+    public void like(String titulo) { 
+        for (Video v : videos) { 
+            if (v.getTitulo().equalsIgnoreCase(titulo)) 
+            { v.setLikes(v.getLikes() + 1); } 
+        } 
+        playlistRepository.guardar(videos); }
 
-    public void toggleFavorito(String titulo) {
-        Video v = findVideo(titulo);
-        if (v!=null){
-            v.setFavorito(!v.isFavorito());
-            playlistRepository.guardar(videos);
-        }
-    }
+    public void toggleFavorito(String titulo) { 
+        for (Video v : videos) { 
+            if (v.getTitulo().equalsIgnoreCase(titulo)) { 
+                v.setFavorito(!v.isFavorito()); 
+            } 
+        } 
+        playlistRepository.guardar(videos); }
 
     public List<Video> obtenerFavoritos() {
         List<Video> favoritos = new ArrayList<>();

@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DEV_DIR = "C:\\Users\\Paula\\Desktop\\playlist-dev"
         PROD_DIR = "C:\\Users\\Paula\\Desktop\\playlist-prod"
     }
 

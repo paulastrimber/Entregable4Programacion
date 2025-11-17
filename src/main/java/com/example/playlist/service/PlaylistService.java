@@ -13,9 +13,13 @@ public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final List<Video> videos;
 
-     public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository) {
         this.playlistRepository = playlistRepository;
         this.videos = new ArrayList<>(playlistRepository.cargar());
+    }
+
+    private Video findVideo(String titulo){
+        return this.videos.stream().filter(v -> v.getTitulo().equalsIgnoreCase(titulo)).findFirst().orElse(null);
     }
 
     public List<Video> obtenerVideos() {
@@ -36,21 +40,19 @@ public class PlaylistService {
     }
 
     public void like(String titulo) {
-        for (Video v : videos) {
-            if (v.getTitulo().equalsIgnoreCase(titulo)) {
-                v.setLikes(v.getLikes() + 1);
-            }
+        Video v = findVideo(titulo);
+        if (v!=null){
+            v.setLikes(v.getLikes() + 1);
+            playlistRepository.guardar(videos);
         }
-        playlistRepository.guardar(videos);
     }
 
     public void toggleFavorito(String titulo) {
-        for (Video v : videos) {
-            if (v.getTitulo().equalsIgnoreCase(titulo)) {
-                v.setFavorito(!v.isFavorito());
-            }
+        Video v = findVideo(titulo);
+        if (v!=null){
+            v.setFavorito(!v.isFavorito());
+            playlistRepository.guardar(videos);
         }
-        playlistRepository.guardar(videos);
     }
 
     public List<Video> obtenerFavoritos() {
